@@ -1,6 +1,7 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+import { ElMessage } from 'element-plus';
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
 
@@ -31,21 +32,36 @@ import { userRegisterService,userLoginService } from '@/api/user.js'
  //调用后台接口完成注册
 const register = async()=>{
     let result = await userRegisterService(registerData.value);
-    if(result.code===0){
-        alert(result.msg?result.msg:'注册成功')
-    }else{
-        alert('注册失败')
-    }
+    // if(result.code===0){
+    //     alert(result.msg?result.msg:'注册成功')
+    // }else{
+    //     alert('注册失败')
+    // }
+    // alert(result.msg?result.msg:'注册成功');
+
+    ElMessage({
+        message: '注册成功',
+        type: 'success',
+    })
 }
 
+import {useRouter} from 'vue-router'
+const router = useRouter()
 const login = async()=>{
     let result = await userLoginService(registerData.value);
-    if(result.code===0){
-        alert(result.msg?result.msg:'登录成功')
-    }else{
-        alert('登录失败');
-        console.log(result)
-    }
+    // if(result.code===0){
+    //     alert(result.msg?result.msg:'登录成功')
+    // }else{
+    //     alert('登录失败');
+    //     console.log(result)
+    // }
+    // alert(result.msg?result.msg:'登录成功');
+    ElMessage({
+        message: '登录成功',
+        type: 'success',
+    })
+    router.push("/")
+
 }
 
 //定义表单校验规则
