@@ -7,6 +7,23 @@ import { ElMessage } from 'element-plus';
 const baseURL = '/api';
 const instance = axios.create({baseURL})
 
+//添加请求拦截器
+import { useTokenStore } from '@/store/token';
+instance.interceptors.request.use(
+    //请求前的回调
+    (config)=>{
+        const tokenStore = useTokenStore();
+        if(tokenStore.token){
+            config.headers.Authorization = tokenStore.token;
+        }
+        return config;
+    },
+    //请求错误的回调
+    (err)=>{
+        Promise.reject(err)
+    }
+)
+
 
 //添加响应拦截器
 instance.interceptors.response.use(

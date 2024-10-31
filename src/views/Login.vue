@@ -1,7 +1,7 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
-import { ElMessage } from 'element-plus';
+import { ElMessage } from 'element-plus'; 
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
 
@@ -29,9 +29,12 @@ const checkRePassword = (rule,value,callback)=>{
     }
 }
 import { userRegisterService,userLoginService } from '@/api/user.js'
+import { useTokenStore } from '@/store/token';
  //调用后台接口完成注册
+const tokenStore = useTokenStore();
 const register = async()=>{
     let result = await userRegisterService(registerData.value);
+
     // if(result.code===0){
     //     alert(result.msg?result.msg:'注册成功')
     // }else{
@@ -43,6 +46,7 @@ const register = async()=>{
         message: '注册成功',
         type: 'success',
     })
+    
 }
 
 import {useRouter} from 'vue-router'
@@ -60,7 +64,10 @@ const login = async()=>{
         message: '登录成功',
         type: 'success',
     })
+    console.log(result.data)
+    tokenStore.setToken(result.data)
     router.push("/")
+    
 
 }
 
@@ -120,7 +127,7 @@ const rules={
                 </el-form-item>
                 <!-- 注册按钮 -->
                 <el-form-item>
-                    <el-button class="button" type="primary" auto-insert-space @click="register;">
+                    <el-button class="button" type="primary" auto-insert-space @click="register">
                         注册
                     </el-button>
                 </el-form-item>
