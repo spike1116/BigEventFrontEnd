@@ -9,6 +9,7 @@ const instance = axios.create({baseURL})
 
 //添加请求拦截器
 import { useTokenStore } from '@/store/token';
+import router  from '@/router';
 instance.interceptors.request.use(
     //请求前的回调
     (config)=>{
@@ -19,11 +20,10 @@ instance.interceptors.request.use(
         return config;
     },
     //请求错误的回调
-    (err)=>{
+    (err)=>{ 
         Promise.reject(err)
     }
 )
-
 
 //添加响应拦截器
 instance.interceptors.response.use(
@@ -31,14 +31,19 @@ instance.interceptors.response.use(
         if(result.data.code===0){
             return result.data;
         }
-
         // alert(result.data,msg?result.data.msg:"服务异常");
         ElMessage.error('服务异常')
         return Promise.reject(result.data);
     },
     err=>{
-        // alert('服务异常');
-        ElMessage.error('服务异常')
+        console.log('response')
+        if(err.response.status===401){
+            ElMessage.error('请先登录！')
+            router.push('/login')
+        }else{
+            // alert('服务异常');
+            ElMessage.error('服务异常')
+        }
         return Promise.reject(err);//异步的状态转化成失败的状态
     }
 )
