@@ -31,3 +31,7 @@ export const userAvatarUpdateService = (avatarUrl) => {
     params.append('path', avatarUrl)
     return request.patch('/user/updateAvatar', params)
 }
+
+export const resetUserPassWordService = (params) => {
+    return request.patch('user/updatePassword', params)
+}
